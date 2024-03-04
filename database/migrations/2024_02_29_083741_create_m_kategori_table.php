@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('m_kategori', function (Blueprint $table) {
-            $table->id();
+            $table->id('kategori_id', 20);
+            $table->string('kategori_kode', 10)->unique(); // Unique untuk memastikan tidak ada username yang sama
+            $table->string('kategori_nama', 100);
             $table->timestamps();
         });
     }
@@ -22,6 +24,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('m_kategori');
+        Schema::table('m_kategori', function (Blueprint $table) {
+            //
+        });
     }
 };

@@ -2,30 +2,63 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\LevelDataTable;
+use App\Http\Requests\StorePostRequest;
+use App\Models\LevelModel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class LevelController extends Controller
 {
-    public function index() {
-        //add data
-     //   DB::insert('insert into m_level(level_kode,
-       // level_nama, created_at) values(?, ?, ?)',
-        //['CUS', 'Pelanggan', now()]);
-        //return 'Insert data baru berhasil';
-    
-    // update data
-    //$row = DB::update('update m_level set level_nama
-    //= ? where level_kode = ?', ['Customer', 'CUS',]);
-    //return 'Update data berhasil, Jumlah data yang diupdate : ' . $row. ' baris';
-    
+    public function index(LevelDataTable $dataTable)
+    {
+        return $dataTable->render('kategori.index');
+    }
+    public function create()
+    {
+        return view('level.create');
+    }
 
-    // delete data
-    //$row = DB::delete('delete from m_level where level_kode = ?', ['CUS']);
-    //return 'Delete data berhasil. Jumlah data yang dihapus: ' . $row.' baris';
+    public function store(StorePostRequest $request): RedirectResponse
+    {
+        // The incoming request is Valid
 
-        // select data
-        $data = DB::select('select * from m_level');
-        return view('level', ['data' => $data]);
+        // Retrieve the validated input data...
+        $validated = $request->validated();
+
+        // Retrieve a portion of the validated input data...
+        $validated = $request->safe()->only(['levelKode', 'levelNama']);
+        $validated = $request->safe()->except(['levelKode', 'levelNama']);
+
+        // Store the post...
+
+        return redirect ('/level');
+    }
+
+    public function edit($id)
+    {
+        $level = LevelModel::find($id);
+        return view('level.edit', ['level' => $level]);
+    }
+
+    public function update($id, Request $request)
+    {
+        $level = LevelModel::find($id);
+
+        $level->level_kode = $request->kodeLevel;
+        $level->level_nama = $request->namaLevel;
+
+        $level->save();
+
+        return redirect('/level');
+    }
+
+    public function destroy($id)
+    {
+        $level = LevelModel::findOrFail($id);
+        $level->delete();
+
+        return redirect('/level');
     }
 }

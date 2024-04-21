@@ -1,7 +1,9 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
 use App\Models\UserModel;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -11,6 +13,22 @@ class UserController extends Controller
     {
         $user = UserModel::with('level')->get();
         return view('user', ['data' => $user]);
+    }
+
+    public function store(StorePostRequest $request): RedirectResponse
+    {
+        // The incoming request is Valid
+
+        // Retrieve the validated input data...
+        $validated = $request->validated();
+
+        // Retrieve a portion of the validated input data...
+        $validated = $request->safe()->only(['username', 'password', 'nama', 'level_id']);
+        $validated = $request->safe()->except(['username', 'password', 'nama', 'level_id']);
+
+        // Store the post...
+
+        return redirect ('/user');
     }
 
     public function tambah()

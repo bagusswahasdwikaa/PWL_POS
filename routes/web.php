@@ -41,3 +41,4 @@ Route::get('/kategori/ubah/{id}', [KategoriController::class, 'ubah'])->name('ka
 Route::put('/kategori/ubah_simpan/{id}', [KategoriController::class, 'ubah_simpan'])->name('kategori.ubah_simpan');
 Route::get('/kategori/hapus/{id}', [KategoriController::class, 'hapus'])->name('kategori.hapus');
 Route::resource('m_user', POSController::class);
+Route::get('/', [WelcomeController::class, 'index']);

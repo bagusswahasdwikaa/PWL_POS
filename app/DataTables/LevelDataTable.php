@@ -24,17 +24,20 @@ class LevelDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function($level){
-                return '<a href="' . url('/level/edit', ['id' => $level->level_id]) . '" class="btn btn-primary mr-2">
-                <i class="fa fa-pencil-alt" style="color: white; font-size: 12px;"></i>
-                </a>' .
-                '<a href="' . url('/level/delete', ['id' => $level->level_id]) . '" class="btn btn-danger" 
-                onclick="return confirm(\'Are you sure want to delete?\')">
-                <i class="fa fa-trash" style="color: white; font-size: 12px;"></i>
-                </a>';
+                return '<div class="btn-group">' .
+                    '<a href="' . url('/level/edit', ['id' => $level->level_id]) . '" class="btn btn-primary">
+                    <i class="fa fa-pencil-alt" style="color: white; font-size: 12px;"></i>
+                    </a>' .
+                    '<a href="' . url('/level/delete', ['id' => $level->level_id]) . '" class="btn btn-danger" 
+                    onclick="return confirm(\'Are you sure want to delete?\')">
+                    <i class="fa fa-trash" style="color: white; font-size: 12px;"></i>
+                    </a>' .
+                    '</div>';
             })
             ->rawColumns(['action'])
             ->setRowId('id');
     }
+
 
     /**
      * Get the query source of dataTable.

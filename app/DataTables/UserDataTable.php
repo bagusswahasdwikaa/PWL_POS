@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\User;
+use App\Models\UserModel;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -22,14 +23,23 @@ class UserDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'user.action')
+            ->addColumn('action', function($user) {
+                return '<a href="' . url('/user/edit', ['id' => $user->user_id]) . '" class="btn btn-primary mr-2">
+                <i class="fa fa-pencil-alt" style="color: white; font-size: 12px;"></i>
+                </a>' .
+                '<a href="' . url('/user/delete', ['id' => $user->user_id]) . '" class="btn btn-danger" 
+                onclick="return confirm(\'Are you sure want to delete?\')">
+                <i class="fa fa-trash" style="color: white; font-size: 12px;"></i>
+                </a>';
+            })
+            ->rawColumns(['action'])
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(User $model): QueryBuilder
+    public function query(UserModel $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -62,15 +72,17 @@ class UserDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center'),
-            Column::make('id'),
-            Column::make('add your columns'),
+            Column::make('user_id'),
+            Column::make('level_id'),
+            Column::make('username'),
+            Column::make('nama'),
             Column::make('created_at'),
             Column::make('updated_at'),
+            Column::computed('action')
+            ->exportable(false)
+            ->printable(false)
+            ->width(100)
+            ->addClass('text-center'),
         ];
     }
 

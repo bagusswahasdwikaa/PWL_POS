@@ -29,7 +29,7 @@ class UserController extends Controller
         return view('user.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu, 'level' => $level]);
     }    
 
-    // Ambil data user dalam betuk json untuk datatables
+    //Ambil data user dalam betuk json untuk datatables
     public function list(Request $request) 
     {
         $users = UserModel::select('user_id', 'username', 'nama', 'level_id')->with('level');

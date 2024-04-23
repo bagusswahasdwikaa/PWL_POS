@@ -1,20 +1,23 @@
-@extends('layout.app')
+@extends('layouts.app')
+
+{{-- Customize layout sections --}}
 
 @section('subtitle', 'Kategori')
 @section('content_header_title', 'Kategori')
 @section('content_header_subtitle', 'Edit')
-{{-- Content body: main page content --}}
+
 @section('content')
     <div class="container">
         <div class="card card-primary">
             <div class="card-header">
-                <h3 class="card-title">Edit kategori</h3>
+           <h3 class="card-title">Edit Kategori</h3>     
             </div>
-            <form  method="post" action="../{{$data->kategori_id}}">
 
-                {{csrf_field()}}
-                {{method_field('PUT')}}
+            <form method="post"action="{{route('/kategori/ubah_simpan',$data->kategori_id) }}">
+                @csrf
+                @method('PUT')
 
+                <div class="card">
                 <div class="card-body">
                     <div class="form-group">
                         <label for="kodeKategori">Kode Kategori</label>
@@ -27,8 +30,9 @@
                 </div>
 
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Edit</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
+            </div>
             </form>
         </div>
     </div>
